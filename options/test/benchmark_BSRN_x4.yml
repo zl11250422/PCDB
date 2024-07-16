@@ -1,0 +1,100 @@
+name: test_BSRN_x4_C64B8_L1_1000k
+suffix: ~  # add suffix to saved images
+model_type: SRModel
+scale: 4
+crop_border: ~  # crop border when evaluation. If None, crop the scale pixels
+num_gpu: 1  # set num_gpu: 0 for cpu mode
+manual_seed: 0
+
+datasets:
+  test_1:  # the 1st test dataset
+    task: SR
+    name: Set5
+    type: PairedImageDataset
+    dataroot_gt: E:\SISR\datasets\Input\Set5\GTmod4
+    dataroot_lq: E:\SISR\datasets\Input\Set5\LRbicx4
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+  test_2:  # the 2st test dataset
+    task: SR
+    name: Set14
+    type: PairedImageDataset
+    dataroot_gt: E:\SISR\datasets\Input\Set14\GTmod4
+    dataroot_lq: E:\SISR\datasets\Input\Set14\LRbicx4
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+  test_3:  # the 3st test dataset
+    task: SR
+    name: BSD100
+    type: PairedImageDataset
+    dataroot_gt: E:\SISR\datasets\Input\BSD100\GTmod4
+    dataroot_lq: E:\SISR\datasets\Input\BSD100\LRbicx4
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+  test_4:  # the 4st test dataset
+    task: SR
+    name: Urban100
+    type: PairedImageDataset
+    dataroot_gt: E:\SISR\datasets\Input\Urban100\GTmod4
+    dataroot_lq: E:\SISR\datasets\Input\Urban100\LRbicx4
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+  test_5:  # the 5st test dataset
+    task: SR
+    name: Manga109
+    type: PairedImageDataset
+    dataroot_gt: E:\SISR\datasets\Input\Manga109\GTmod4
+    dataroot_lq: E:\SISR\datasets\Input\Manga109\LRbicx4
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+  test_6:  # the 5st test dataset
+    task: SR
+    name: DIV2K100
+    type: PairedImageDataset
+    dataroot_gt: E:\SISR\SRCNN\Flickr2K\Flickr2K_test_HR
+    dataroot_lq: E:\SISR\SRCNN\Flickr2K\Flickr2K_test_LR_bicubic\X4
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+# network structures
+network_g:
+  type: BSRN
+  num_in_ch: 3
+  num_feat: 64
+  num_block: 8
+  num_out_ch: 3
+  upscale: 4
+  # change_c: 15
+  conv: BSConvU
+  #type: RFDN
+# path
+path:
+  pretrain_network_g: E:\SISR\SRCNN\PCDB-main\experiments\BSRN_x4_C64B8_L1_1000k\models\net_g_486000.pth
+  #pretrain_network_g: E:\SISR\SRCNN\PCDB-main\experiments\BSRN_x4_C64B8_L1_1000k\models\net_g_810000.pth
+  strict_load_g: true
+
+# validation settings
+val:
+  save_img: true
+  suffix: ~  # add suffix to saved images, if None, use exp name
+  pbar: true
+  metrics:
+    psnr: # metric name, can be arbitrary
+      type: calculate_psnr
+      crop_border: 4
+      test_y_channel: true
+    ssim:
+      type: calculate_ssim
+      crop_border: 4
+      test_y_channel: true

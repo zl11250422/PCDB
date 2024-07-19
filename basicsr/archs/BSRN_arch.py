@@ -313,8 +313,7 @@ class ESDB(nn.Module):
 
         self.c5 = nn.Conv2d(self.dc * 4, in_channels, 1)
         self.esa = ESA(in_channels, conv)
-        #self.cca = CCALayer(in_channels)
-        #self.eca = eca_layer(in_channels)
+        self.eca = eca_layer(in_channels)
     def forward(self, input):
 
         distilled_c1 = self.act(self.c1_d(input))
@@ -337,8 +336,7 @@ class ESDB(nn.Module):
         out = torch.cat([distilled_c1, distilled_c2, distilled_c3, r_c4], dim=1)
         out = self.c5(out)
         out_fused = self.esa(out)
-        #out_fused = self.cca(out_fused)
-        #out_fused = self.eca(out_fused)
+        out_fused = self.eca(out_fused)
         return out_fused + input
 
 

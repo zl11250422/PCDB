@@ -1,0 +1,1 @@
+To compress the model, please use convert.py to perform reparameterization on the model.
